@@ -1,0 +1,43 @@
+{
+  "width": 753,
+  "height": 211,
+  "cx": [
+    [ "CATEGORIE", 55 ],
+    [ "FOURNISSEUR", 178 ],
+    [ "PRODUIT", 299 ],
+    [ "CLIENT", 405 ],
+    [ "COMMANDE", 528 ],
+    [ "LIGNE_COMMANDE", 680 ],
+    [ "APPARTIENT", 55 ],
+    [ "FOURNIT", 178 ],
+    [ "PASSE", 299 ],
+    [ "CONTIENT", 405 ],
+    [ "CONCERNE", 528 ]
+  ],
+  "cy": [
+    [ "CATEGORIE", 68 ],
+    [ "FOURNISSEUR", 68 ],
+    [ "PRODUIT", 68 ],
+    [ "CLIENT", 68 ],
+    [ "COMMANDE", 68 ],
+    [ "LIGNE_COMMANDE", 68 ],
+    [ "APPARTIENT", 177 ],
+    [ "FOURNIT", 177 ],
+    [ "PASSE", 177 ],
+    [ "CONTIENT", 177 ],
+    [ "CONCERNE", 177 ]
+  ],
+  "shift": [
+    [ "APPARTIENT,PRODUIT,0", 0 ],
+    [ "APPARTIENT,CATEGORIE,0", 0 ],
+    [ "FOURNIT,PRODUIT,0", 0 ],
+    [ "FOURNIT,FOURNISSEUR,0", 0 ],
+    [ "PASSE,CLIENT,0", 0 ],
+    [ "PASSE,COMMANDE,0", 0 ],
+    [ "CONTIENT,COMMANDE,0", 0 ],
+    [ "CONTIENT,LIGNE_COMMANDE,0", 0 ],
+    [ "CONCERNE,LIGNE_COMMANDE,0", 0 ],
+    [ "CONCERNE,PRODUIT,0", 0 ]
+  ],
+  "ratio": []
+}

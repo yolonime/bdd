@@ -1,0 +1,12 @@
+CATEGORIE: id, nom
+FOURNISSEUR: id, nom, adresse, telephone
+PRODUIT: id, nom, description, prix, stock
+CLIENT: id, nom, adresse, telephone
+COMMANDE: id, date_commande
+LIGNE_COMMANDE: id, quantite, prix_unitaire
+
+APPARTIENT, 0N PRODUIT, 11 CATEGORIE
+FOURNIT, 1N PRODUIT, 1N FOURNISSEUR
+PASSE, 1N CLIENT, 0N COMMANDE
+CONTIENT, 1N COMMANDE, 0N LIGNE_COMMANDE
+CONCERNE, 0N LIGNE_COMMANDE, 1N PRODUIT
