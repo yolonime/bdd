@@ -31,13 +31,13 @@ const initDB = async () => {
         console.log('Connexion à MySQL réussie');
 
         // Exécution d'un script SQL (par exemple, pour créer la base ou les tables)
-        await executeSQLFile(connection, 'db.sql');
+        await executeSQLFile(connection, 'db/db.sql');
 
         // Changement de base de données
         await connection.changeUser({ database: 'GestionStock' });
 
         // Insertion des données initiales
-        await executeSQLFile(connection, 'data.sql');
+        await executeSQLFile(connection, 'db/data.sql');
 
         console.log('Base de données initialisée avec succès');
         return connection;

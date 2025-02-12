@@ -56,3 +56,4 @@ INSERT INTO Lignes_Commande (commande_id, produit_id, quantite, prix_unitaire) V
 (3, 4, 2, 20.00),
 (4, 5, 3, 30.00),
 (5, 2, 1, 150.00);
+

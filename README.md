@@ -1,69 +1,34 @@
-# Analyse de Sécurité - Failles et Mauvaises Pratiques
+# Audit de la V1 - Système de gestion de stock
 
-Ce document recense les failles potentielles et les mauvaises pratiques identifiées dans le code, sans proposer de solutions ni recommandations.
+## 1. Introduction
+L'audit de la V1 du système de gestion de stock a pour objectif d'identifier les failles de sécurité et les incohérences dans l'implémentation actuelle. La version actuelle est un prototype (POC) sans mesures de protection particulières.
 
----
+## 2. Problématiques identifiées
+### 2.1. Risques de sécurité
+#### a) Injection SQL
+- Utilisation de requêtes SQL directes sans paramétrisation (évitable avec `?` et des requêtes préparées).
+- Exemples de vulnérabilités :
+  ```js
+  const sql = `INSERT INTO Categories (nom) VALUES ('${nom}')`;
+  ```
+  Un attaquant pourrait injecter du SQL malveillant en envoyant `nom = "'); DROP TABLE Categories; --"`.
 
-## 1. Mot de passe de base de données vide
+#### b) Manque de validation des entrées
+- Absence de vérifications sur les champs `nom`, `prix`, `stock`, etc.
+- Risque d'ajouter des données incohérentes (ex. stock négatif, prix null).
 
-- **Constat** :  
-  Le mot de passe utilisé pour se connecter à MySQL est une chaîne vide (`password: ''`).
+#### c) Manque de gestion des erreurs
+- Pas de capture fine des erreurs SQL.
+- Renvoyer une erreur brute de MySQL peut divulguer des informations sensibles.
 
-- **Impact** :  
-  Cela représente un risque important en environnement de production, car l'accès à la base de données devient trivial.
+### 2.2. Incohérences métier
+#### a) Stock non contrôlé lors des commandes
+- Possibilité de passer commande même si le produit n'est pas en stock.
+- Aucune mise à jour automatique du stock après une commande.
 
----
+#### b) Suppression sans contrainte
+- Suppression d'un client ou d'une catégorie sans vérifier si des commandes ou produits y sont liés.
 
-## 2. Absence de validation et de sanitation des entrées utilisateur
+## 3. Conclusion
+Cet audit met en évidence les principales failles de la V1, soulignant les risques de sécurité et les incohérences métier identifiées dans le système.
 
-- **Constat** :  
-  Les données reçues dans le corps des requêtes ne sont ni validées ni nettoyées.
-
-- **Impact** :  
-  Des données malformées ou potentiellement malveillantes peuvent être insérées dans la base de données, ce qui peut entraîner des comportements inattendus ou des erreurs.
-
----
-
-## 3. Manque de contrôle d'accès et d'authentification
-
-- **Constat** :  
-  Toutes les routes de l'API sont accessibles publiquement, sans mécanisme d'authentification ni de contrôle des autorisations.
-
-- **Impact** :  
-  N'importe quel utilisateur peut accéder et interagir avec l'API, ce qui augmente le risque de modifications non autorisées ou d'abus.
-
----
-
-## 4. Utilisation d'une connexion MySQL partagée unique
-
-- **Constat** :  
-  Le code crée une seule connexion à la base de données qui est utilisée par toutes les routes.
-
-- **Impact** :  
-  Si cette connexion rencontre un problème (déconnexion ou saturation), cela affectera l'ensemble de l'application.
-
----
-
-## 5. Lecture synchrone des fichiers SQL
-
-- **Constat** :  
-  Le fichier SQL est lu de manière synchrone via `fs.readFileSync`.
-
-- **Impact** :  
-  L'exécution bloquante de cette lecture peut ralentir le démarrage de l'application et occuper inutilement le thread principal, en particulier avec des fichiers volumineux.
-
----
-
-## 6. Exécution de scripts SQL à partir de fichiers externes
-
-- **Constat** :  
-  Les fichiers `db.sql` et `data.sql` sont exécutés directement, sans contrôle sur leur contenu.
-
-- **Impact** :  
-  Si ces fichiers sont altérés ou compromis, des instructions malveillantes pourraient être exécutées, ce qui affecterait la sécurité et l'intégrité de la base de données.
-
----
-
-## Conclusion
-
-Les points ci-dessus illustrent plusieurs failles et mauvaises pratiques présentes dans le code. Ces éléments soulignent des vulnérabilités potentielles qui peuvent compromettre la sécurité et la stabilité de l'application, notamment dans un environnement de production.
